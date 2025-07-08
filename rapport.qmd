@@ -1,0 +1,134 @@
+---
+title: "Rapport de laboratoire 4"
+subtitle: "MTH8211"
+author:
+  - name: Mon nom
+    email: mon.adresse@polymtl.ca
+    affiliation:
+      - name: Polytechnique Montréal
+format:
+  pdf:
+    keep-tex: false
+    documentclass: article
+    include-in-header:
+      - text: |
+            \usepackage{xspace}
+            \usepackage[francais]{babel}
+    geometry:
+      - margin=1in
+    papersize: letter
+    colorlinks: true
+    urlcolor: blue
+engine: julia
+---
+
+```{julia}
+#| output: false
+using Pkg
+Pkg.activate("labo4_env")
+Pkg.add("Krylov")
+Pkg.add("SuiteSparseMatrixCollection")
+Pkg.add("MatrixMarket")
+
+using LinearAlgebra
+using MatrixMarket
+using Krylov, SuiteSparseMatrixCollection
+```
+
+# Contexte
+
+Dans ce laboratoire, on demande de comparer des méthodes basées sur le processus de Golub-Kahan et de Lanczos pour résoudre des problèmes aux moindres carrés et de moindre norme.
+On se réfèrera aux carnets Jupyter vus en laboratoire pour les extraits de code pertinents.
+
+# Questions
+
+Sur base du code vu en laboratoire, écrire une fonction qui prend en entrée un nom de matrice `matrix_name` et renvoie la matrice `A` et le membre de droite `b` correspondants.
+
+```{julia}
+function get_mm(matrix_name)
+  # A = ...
+  # b = ...
+  return A, b
+end
+```
+
+Utiliser cette fonction pour télécharger les problèmes aux moindres carrés `illc1033`, `illc1850`, `well1033`, `well1850` de la [SuiteSparse Matrix Collection](https://sparse.tamu.edu), y compris les membres de droite.
+Attention, traiter les problèmes en séquence et ne pas tous les mémoriser simultanément.
+
+## Problèmes aux moindres carrés
+
+### Méthodes basées sur Golub-Kahan
+
+Résoudre ces problèmes avec LSQR et LSMR en utilisant les tolérances par défaut et comparer les résultats dans un tableau à l'aide de [PrettyTables.jl](https://ronisbr.github.io/PrettyTables.jl) (voici un [exemple](https://ronisbr.github.io/PrettyTables.jl/stable/man/text_examples)).
+Votre tableau doit montrer
+
+* le nombre d'itérations ;
+* la norme du résidu aux moindres carrés initial et final ;
+* la norme du résidu d'optimalité du problème aux moindres carrés initial et final ;
+* le statuts final.
+
+```{julia}
+# votre code ici
+```
+
+Tracer sur un graphe l'évolution du résidu aux moindres carrés, du résidu d'optimalité du problème aux moindres carrés, et de l'erreur en norme euclidienne.
+
+```{julia}
+# votre code ici
+```
+
+Commenter ces résultats sur base de ce qui a été vu en classe.
+
+### Méthodes basées sur Lanczos
+
+Répéter la question précédente en appliquant MINRES, MINRES-QLP, MINARES et SYMMLQ sur le système de point de selle et produire un tableau semblable.
+
+```{julia}
+# votre code ici
+```
+
+Tracer sur un graphe l'évolution du résidu d'optimalité du problème aux moindres carrés et du résidu du système de point de selle.
+
+```{julia}
+# votre code ici
+```
+
+Commenter ces résultats sur base de ce qui a été vu en classe.
+
+## Problèmes de moindre norme
+
+En transposant chacune des matrices `A` de la question précédente, former un système sous-déterminé consistant et résoudre le problème de moindre norme avec CRAIG, LSQR et LSMR en utilisant les tolérances par défaut.
+Comparer les résultats dans un tableau à l'aide de [PrettyTables.jl](https://ronisbr.github.io/PrettyTables.jl).
+Votre tableau doit montrer
+
+* le nombre d'itérations ;
+* la norme de la solution initiale et finale ;
+* la norme de l'erreur intiale et finale ;
+* le statuts final.
+
+Les itérés générés par ces trois méthodes vérifient-ils $A x_k = b$ à chaque itération ?
+Expliquer.
+
+Tracer sur un graphe l'évolution de la norme de la solution et de l'erreur en norme euclidienne.
+
+```{julia}
+# votre code ici
+```
+
+Commenter ces résultats sur base de ce qui a été vu en classe.
+
+### Méthodes basées sur Lanczos
+
+Répéter la question précédente en appliquant MINRES, MINRES-QLP, MINARES et SYMMLQ sur le système de point de selle et produire un tableau semblable.
+
+```{julia}
+# votre code ici
+```
+
+Tracer sur un graphe l'évolution du résidu d'optimalité du problème aux moindres carrés et du résidu du système de point de selle.
+
+```{julia}
+# votre code ici
+```
+
+Commenter ces résultats sur base de ce qui a été vu en classe.
